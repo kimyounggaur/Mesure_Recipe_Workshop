@@ -97,6 +97,21 @@ export default function Home() {
   }, [muted]);
 
   useEffect(() => {
+    if (screen !== "practice" || !practiceActive) return;
+    let animationFrame = 0;
+    const updateProgress = () => {
+      const audio = audioRef.current;
+      if (!audio) return;
+      const elapsed = Math.max(0, audio.now() - practiceStartRef.current);
+      const duration = targetUnits * audio.secondsPerUnit * 2;
+      setPracticeProgress(Math.min(1, elapsed / duration));
+      if (elapsed < duration) animationFrame = window.requestAnimationFrame(updateProgress);
+    };
+    animationFrame = window.requestAnimationFrame(updateProgress);
+    return () => window.cancelAnimationFrame(animationFrame);
+  }, [practiceActive, screen, targetUnits]);
+
+  useEffect(() => {
     return () => {
       if (finishTimeoutRef.current) window.clearTimeout(finishTimeoutRef.current);
     };
@@ -219,7 +234,6 @@ export default function Home() {
   }
 
   function finishPractice() {
-    if (!practiceActive && screen !== "practice") return;
     setPracticeActive(false);
     setPracticeProgress(1);
     setScreen("result");
