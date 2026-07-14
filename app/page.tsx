@@ -290,12 +290,13 @@ export default function Home() {
   }
 
   return (
-    <main className={`app-shell ${lowSensory ? "is-low-sensory" : ""}`}>
+    <main className={`app-shell screen-${screen} ${lowSensory ? "is-low-sensory" : ""}`}>
+      <div className="workshop-artwork" aria-hidden="true" />
       <div className="ambient ambient-one" />
       <div className="ambient ambient-two" />
       <header className="topbar">
         <div className="brand-lockup">
-          <div className="brand-mark" aria-hidden="true">M</div>
+          <div className="brand-mark" aria-hidden="true">★</div>
           <div>
             <p className="eyebrow">MELODIA · RHYTHM LAB</p>
             <h1>마디 레시피 공방</h1>
